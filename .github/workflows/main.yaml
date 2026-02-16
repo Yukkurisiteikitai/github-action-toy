@@ -26,10 +26,13 @@ jobs:
       - name: Install Ruff
         run: pip install ruff
       
-      - name: Check and format
-        run: |
-          ruff format .
-          ruff check --fix .
+      - name: Ruff format
+        continue-on-error: true
+        run: ruff format .
+
+      - name: Ruff check --fix
+        if: always()
+        run: ruff check --fix .
       
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
