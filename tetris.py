@@ -1,5 +1,4 @@
 import curses
-import math
 import random
 import time
 
@@ -164,7 +163,7 @@ def main(stdscr):
     stdscr.nodelay(True)
     stdscr.timeout(0)
 
-    board  = [["."] * BOARD_W for _ in range(BOARD_H)]
+    board = [["."] * BOARD_W for _ in range(BOARD_H)]
     piece = new_piece()
     score = 0
     best_score = 0
