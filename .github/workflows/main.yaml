@@ -1,0 +1,36 @@
+name: Python Format Check
+
+on:
+  pull_request:
+    paths:
+      - '**.py'
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+      
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install Ruff
+        run: pip install ruff
+      
+      - name: Check and format
+        run: |
+          ruff format .
+          ruff check --fix .
+      
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: Auto-format Python code with Ruff"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
