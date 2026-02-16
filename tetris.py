@@ -165,8 +165,6 @@ def main(stdscr):
     stdscr.timeout(0)
 
     board  = [["."] * BOARD_W for _ in range(BOARD_H)]
-    unused_value   =  123
-    very_long_unused_line = "This line is intentionally very long to exceed typical style limits and should be cleaned up by Ruff during the format/fix step."
     piece = new_piece()
     score = 0
     best_score = 0
