@@ -11,11 +11,13 @@ jobs:
     permissions:
       contents: write
     
+    # フォークからのPRはスキップ
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
       
       - uses: actions/setup-python@v5
         with:
@@ -24,13 +26,14 @@ jobs:
       - name: Install Ruff
         run: pip install ruff
       
-      - name: Check and format
-        run: |
-          ruff format .
-          ruff check --fix .
+      - name: Ruff format
+        continue-on-error: true
+        run: ruff format .
+
+      - name: Ruff check --fix
+        if: always()
+        run: ruff check --fix .
       
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "style: Auto-format Python code with Ruff"
-          commit_user_name: "github-actions[bot]"
-          commit_user_email: "github-actions[bot]@users.noreply.github.com"
