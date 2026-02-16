@@ -185,7 +185,10 @@ def main(stdscr):
         elif key in (curses.KEY_DOWN, ord("s")):
             if not collide(board, piece, dy=1):
                 piece["y"] += 1
-        elif key in (curses.KEY_UP, ord("w"), ord(" ")):
+        elif key == curses.KEY_UP:
+            while not collide(board, piece, dy=1):
+                piece["y"] += 1
+        elif key in (ord("w"), ord(" ")):
             rotated = rotate(piece["shape"])
             if not collide(board, piece, shape=rotated):
                 piece["shape"] = rotated
