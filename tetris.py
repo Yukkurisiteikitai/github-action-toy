@@ -103,7 +103,7 @@ def clear_lines(board):
     return new_board, cleared
 
 
-def draw(stdscr, board, piece, score, best_score):
+def draw(stdscr, board, piece, score, best_score, level):
     height, width = stdscr.getmaxyx()
     board_w_chars = BOARD_W * 2 + 2
     board_h_rows = BOARD_H + 1
@@ -134,7 +134,7 @@ def draw(stdscr, board, piece, score, best_score):
         return
 
     safe_addstr(0, 0, "TETRIS (q to quit)")
-    safe_addstr(1, 0, f"Score: {score}  Best: {best_score}")
+    safe_addstr(1, 0, f"Score: {score}  Best: {best_score}  Lv: {level}")
 
     # Draw board with piece overlay
     for y in range(BOARD_H):
@@ -170,6 +170,8 @@ def main(stdscr):
 
     drop_interval = 0.5
     last_drop = time.time()
+    total_lines = 0
+    level = 1
 
     while True:
         now = time.time()
@@ -204,6 +206,10 @@ def main(stdscr):
                 score += cleared * 100
                 if score > best_score:
                     best_score = score
+                if cleared:
+                    total_lines += cleared
+                    level = total_lines // 10 + 1
+                    drop_interval = max(0.1, 0.5 - (level - 1) * 0.04)
                 piece = new_piece()
                 if collide(board, piece):
                     stdscr.addstr(3 + BOARD_H + 2, 0, "Game Over! Press q to quit.")
@@ -212,7 +218,7 @@ def main(stdscr):
                         time.sleep(0.05)
                     break
 
-        draw(stdscr, board, piece, score, best_score)
+        draw(stdscr, board, piece, score, best_score, level)
         time.sleep(0.02)
 
 
