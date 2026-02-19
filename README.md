@@ -2,3 +2,5 @@
 Github Actionを使用してpythonのフォーマットを整える実験をした
 Github Actionの実験用に作成したリポジトリです。
 Ruffを利用してフォーマットを統一しています。
+
+cも追加したよ
